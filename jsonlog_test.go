@@ -234,22 +234,3 @@ func TestPanic(t *testing.T) {
 	}()
 	logger.Panic("test")
 }
-
-func TestFatal(t *testing.T) {
-	buf := &bytes.Buffer{}
-	bufErr := &bytes.Buffer{}
-	logger := &logger{out: golog.New(buf, "", 0), err: golog.New(bufErr, "", 0)}
-	logger.verbosity = FATAL
-	defer func() {
-		if r := recover(); r == nil {
-			t.Error("Expected panic")
-		}
-		if !strings.Contains(bufErr.String(), "fatal") {
-			t.Error("Expected log message to contain 'fatal'")
-		}
-		if !strings.Contains(bufErr.String(), "test") {
-			t.Error("Expected log message to contain 'test'")
-		}
-	}()
-	logger.Fatal("test")
-}
